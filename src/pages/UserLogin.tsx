@@ -1,13 +1,9 @@
 import Header from "@/components/Header";
 import LoginForm from "@/components/LoginForm";
 import heroInterior from "@/assets/hero-interior.jpg";
-import { useEffect } from "react";
 
-function UserLogin() {
-  // 👇 Add this useEffect at the top of your component
-  useEffect(() => {
-    document.title = "User Login - PG Pathfinder";
-  }, []);
+
+
 
 const UserLogin = () => {
   return (
