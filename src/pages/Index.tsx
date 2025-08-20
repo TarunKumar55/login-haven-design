@@ -36,7 +36,8 @@ const Index = () => {
       description: "Find your perfect home away from home",
       icon: User,
       variant: "default" as const,
-      gradient: "from-primary to-accent"
+      gradient: "from-primary to-accent",
+      signupPath: "/user-signup"
     },
     {
       path: "/pg-owner-login",
@@ -44,7 +45,8 @@ const Index = () => {
       description: "Manage your property and reach more tenants",
       icon: Building,
       variant: "gold" as const,
-      gradient: "from-gold-accent to-accent"
+      gradient: "from-gold-accent to-accent",
+      signupPath: "/pg-owner-signup"
     },
     {
       path: "/admin-login",
@@ -52,7 +54,8 @@ const Index = () => {
       description: "Administrative access to the platform",
       icon: Shield,
       variant: "elegant" as const,
-      gradient: "from-deep-charcoal to-primary"
+      gradient: "from-deep-charcoal to-primary",
+      signupPath: "/admin-signup"
     }
   ];
 
@@ -98,11 +101,18 @@ const Index = () => {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <Link to={option.path}>
-                        <Button variant={option.variant} className="w-full">
-                          Get Started
-                        </Button>
-                      </Link>
+                      <div className="space-y-3">
+                        <Link to={option.path}>
+                          <Button variant={option.variant} className="w-full">
+                            Sign In
+                          </Button>
+                        </Link>
+                        <Link to={option.signupPath}>
+                          <Button variant="glass" className="w-full">
+                            Sign Up
+                          </Button>
+                        </Link>
+                      </div>
                     </CardContent>
                   </Card>
                 );

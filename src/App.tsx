@@ -7,6 +7,9 @@ import Index from "./pages/Index";
 import UserLogin from "./pages/UserLogin";
 import PgOwnerLogin from "./pages/PgOwnerLogin";
 import AdminLogin from "./pages/AdminLogin";
+import UserSignup from "./pages/UserSignup";
+import PgOwnerSignup from "./pages/PgOwnerSignup";
+import AdminSignup from "./pages/AdminSignup";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +25,9 @@ const App = () => (
           <Route path="/user-login" element={<UserLogin />} />
           <Route path="/pg-owner-login" element={<PgOwnerLogin />} />
           <Route path="/admin-login" element={<AdminLogin />} />
+          <Route path="/user-signup" element={<UserSignup />} />
+          <Route path="/pg-owner-signup" element={<PgOwnerSignup />} />
+          <Route path="/admin-signup" element={<AdminSignup />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

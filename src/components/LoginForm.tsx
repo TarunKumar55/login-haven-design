@@ -109,7 +109,7 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
             <div className="text-center">
               <p className="text-sm text-muted-foreground">
                 Don't have an account?{" "}
-                <a href="#" className="text-accent hover:text-accent/80 transition-colors font-medium">
+                <a href={`/${userType}-signup`} className="text-accent hover:text-accent/80 transition-colors font-medium">
                   Sign up
                 </a>
               </p>
