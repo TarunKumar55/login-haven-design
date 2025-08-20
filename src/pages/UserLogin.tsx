@@ -1,11 +1,15 @@
 import Header from "@/components/Header";
 import LoginForm from "@/components/LoginForm";
 import heroInterior from "@/assets/hero-interior.jpg";
-
+import { useEffect } from "react";
 
 
 
 const UserLogin = () => {
+  function UserLogin() {
+  useEffect(() => {
+    document.title = "User Login - PG Pathfinder";
+  }, []);
   return (
     <div className="min-h-screen relative">
       <Header />
