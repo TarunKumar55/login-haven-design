@@ -14,16 +14,173 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      pg_images: {
+        Row: {
+          created_at: string | null
+          id: string
+          image_order: number
+          image_url: string
+          pg_listing_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          image_order?: number
+          image_url: string
+          pg_listing_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          image_order?: number
+          image_url?: string
+          pg_listing_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pg_images_pg_listing_id_fkey"
+            columns: ["pg_listing_id"]
+            isOneToOne: false
+            referencedRelation: "pg_listings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pg_listings: {
+        Row: {
+          address: string
+          approved_at: string | null
+          approved_by: string | null
+          city: string
+          created_at: string | null
+          description: string | null
+          food_type: string | null
+          has_ac: boolean
+          has_washing_machine: boolean
+          has_wifi: boolean
+          id: string
+          is_active: boolean
+          latitude: number | null
+          longitude: number | null
+          num_beds: number
+          owner_id: string
+          pincode: string
+          rent_per_month: number
+          security_deposit: number | null
+          state: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          address: string
+          approved_at?: string | null
+          approved_by?: string | null
+          city: string
+          created_at?: string | null
+          description?: string | null
+          food_type?: string | null
+          has_ac?: boolean
+          has_washing_machine?: boolean
+          has_wifi?: boolean
+          id?: string
+          is_active?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          num_beds: number
+          owner_id: string
+          pincode: string
+          rent_per_month: number
+          security_deposit?: number | null
+          state: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          city?: string
+          created_at?: string | null
+          description?: string | null
+          food_type?: string | null
+          has_ac?: boolean
+          has_washing_machine?: boolean
+          has_wifi?: boolean
+          id?: string
+          is_active?: boolean
+          latitude?: number | null
+          longitude?: number | null
+          num_beds?: number
+          owner_id?: string
+          pincode?: string
+          rent_per_month?: number
+          security_deposit?: number | null
+          state?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pg_listings_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pg_listings_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          role: Database["public"]["Enums"]["user_role"]
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          role?: Database["public"]["Enums"]["user_role"]
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
     }
     Enums: {
-      [_ in never]: never
+      user_role: "user" | "pg_owner" | "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +307,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      user_role: ["user", "pg_owner", "admin"],
+    },
   },
 } as const
