@@ -54,8 +54,7 @@ const Index = () => {
       description: "Administrative access to the platform",
       icon: Shield,
       variant: "elegant" as const,
-      gradient: "from-deep-charcoal to-primary",
-      signupPath: "/admin-signup"
+      gradient: "from-deep-charcoal to-primary"
     }
   ];
 
@@ -77,7 +76,7 @@ const Index = () => {
             <h1 className="text-5xl lg:text-7xl font-bold text-white leading-tight">
               Your Perfect
               <span className="block bg-gradient-to-r from-gold-accent to-accent bg-clip-text text-transparent">
-                Interior Haven
+                PG Pathfinder
               </span>
               Awaits
             </h1>
@@ -107,11 +106,13 @@ const Index = () => {
                             Sign In
                           </Button>
                         </Link>
-                        <Link to={option.signupPath}>
-                          <Button variant="glass" className="w-full">
-                            Sign Up
-                          </Button>
-                        </Link>
+                        {option.signupPath && (
+                          <Link to={option.signupPath}>
+                            <Button variant="glass" className="w-full">
+                              Sign Up
+                            </Button>
+                          </Link>
+                        )}
                       </div>
                     </CardContent>
                   </Card>
@@ -127,7 +128,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-6">
-              Why Choose Interior Haven?
+              Why Choose PG Pathfinder?
             </h2>
             <p className="text-xl text-muted-foreground">
               We provide more than just accommodation - we create beautifully designed living experiences.
