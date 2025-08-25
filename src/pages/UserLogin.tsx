@@ -1,4 +1,7 @@
 import Header from "@/components/Header";
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import LoginForm from "@/components/LoginForm";
 import heroInterior from "@/assets/hero-interior.jpg";
 
