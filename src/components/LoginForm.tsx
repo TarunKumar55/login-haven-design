@@ -3,7 +3,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Mail, Lock } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
   title: string;
@@ -15,11 +17,27 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+  const { signIn } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log(`${userType} login attempt:`, { email, password });
+    if (!email || !password) return;
+    
+    setLoading(true);
+    try {
+      const { error } = await signIn(email, password);
+      if (!error) {
+        // Redirect to dashboard on successful login
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getButtonVariant = () => {
@@ -102,8 +120,16 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
               variant={getButtonVariant()}
               className="w-full"
               size="lg"
+              disabled={loading || !email || !password}
             >
-              Sign In
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
 
             <div className="text-center">

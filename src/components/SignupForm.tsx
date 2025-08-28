@@ -3,7 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Mail, Lock, User, Phone, Building } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, Phone, Building, Loader2 } from "lucide-react";
+import { useAuth, UserRole } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "@/hooks/use-toast";
 
 interface SignupFormProps {
   title: string;
@@ -14,6 +17,7 @@ interface SignupFormProps {
 const SignupForm = ({ title, description, userType }: SignupFormProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -25,14 +29,68 @@ const SignupForm = ({ title, description, userType }: SignupFormProps) => {
     agreeToTerms: false
   });
 
+  const { signUp } = useAuth();
+  const navigate = useNavigate();
+
   const handleInputChange = (field: string, value: string | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Passwords don't match",
+        description: "Please make sure both password fields match.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    if (formData.password.length < 6) {
+      toast({
+        title: "Password too short",
+        description: "Password must be at least 6 characters long.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    if (!formData.agreeToTerms) {
+      toast({
+        title: "Terms required",
+        description: "Please agree to the terms and conditions.",
+        variant: "destructive",
+      });
+      return false;
+    }
+    
+    return true;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle signup logic here
-    console.log(`${userType} signup attempt:`, formData);
+    
+    if (!validateForm()) return;
+    
+    setLoading(true);
+    try {
+      const role: UserRole = userType === 'pg-owner' ? 'pg_owner' : 'user';
+      const { error } = await signUp(
+        formData.email, 
+        formData.password, 
+        role, 
+        formData.fullName
+      );
+      
+      if (!error) {
+        // Redirect to dashboard on successful signup
+        navigate('/dashboard');
+      }
+    } catch (err) {
+      console.error('Signup error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const getButtonVariant = () => {
@@ -225,8 +283,16 @@ const SignupForm = ({ title, description, userType }: SignupFormProps) => {
               variant={getButtonVariant()}
               className="w-full"
               size="lg"
+              disabled={loading || !formData.email || !formData.password || !formData.fullName}
             >
-              Create Account
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Creating Account...
+                </>
+              ) : (
+                "Create Account"
+              )}
             </Button>
 
             <div className="text-center">
