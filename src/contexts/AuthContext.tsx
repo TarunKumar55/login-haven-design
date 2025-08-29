@@ -58,10 +58,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const cleanupAuthState = () => {
+    // Clear all auth-related keys from localStorage
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        localStorage.removeItem(key);
+      }
+    });
+    // Clear from sessionStorage if in use
+    Object.keys(sessionStorage || {}).forEach((key) => {
+      if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+        sessionStorage.removeItem(key);
+      }
+    });
+  };
+
   useEffect(() => {
-    // Set up auth state listener
+    // Set up auth state listener (non-async for stability)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
@@ -144,6 +159,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string) => {
     try {
+      // Clean up existing auth state first
+      cleanupAuthState();
+      
+      // Attempt global sign out to clear any existing sessions
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continue even if this fails
+      }
+
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -170,8 +195,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      // Clean up auth state first
+      cleanupAuthState();
+      
+      // Attempt global sign out
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continue even if this fails
+      }
 
       setUser(null);
       setSession(null);
@@ -181,6 +213,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         title: "Signed out",
         description: "You have been signed out successfully.",
       });
+
+      // Force page reload for clean state
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 100);
     } catch (error: any) {
       console.error('Sign out error:', error);
       toast({
@@ -195,15 +232,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       if (!user) throw new Error('No user logged in');
 
+      // Security: Only allow specific fields to be updated from client
+      const allowedFields: Array<keyof Profile> = ['full_name', 'phone'];
+      const filteredUpdates: Partial<Profile> = {};
+      
+      allowedFields.forEach(field => {
+        if (updates[field] !== undefined) {
+          (filteredUpdates as any)[field] = updates[field];
+        }
+      });
+
+      if (Object.keys(filteredUpdates).length === 0) {
+        return { error: new Error('No valid fields to update') };
+      }
+
       const { error } = await supabase
         .from('profiles')
-        .update(updates)
+        .update(filteredUpdates)
         .eq('id', user.id);
 
       if (error) throw error;
 
       // Update local profile state
-      setProfile(prev => prev ? { ...prev, ...updates } : null);
+      setProfile(prev => prev ? { ...prev, ...filteredUpdates } : null);
 
       return { error: null };
     } catch (error: any) {

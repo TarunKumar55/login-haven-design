@@ -107,8 +107,19 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
 
     for (let i = 0; i < images.length; i++) {
       const file = images[i];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${listingId}_${Date.now()}_${i}.${fileExt}`;
+      const fileExt = file.name.split('.').pop() || 'jpg';
+      // Use UUID-based filename for security
+      const fileName = `${crypto.randomUUID()}.${fileExt}`;
+
+      // Validate file size (max 10MB)
+      if (file.size > 10 * 1024 * 1024) {
+        throw new Error(`Image ${file.name} is too large. Maximum size is 10MB.`);
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        throw new Error(`File ${file.name} is not a valid image.`);
+      }
 
       const { data, error } = await supabase.storage
         .from('pg-images')
