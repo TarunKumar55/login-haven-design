@@ -11,6 +11,7 @@ import AdminLogin from "./pages/AdminLogin";
 import UserSignup from "./pages/UserSignup";
 import PgOwnerSignup from "./pages/PgOwnerSignup";
 import Dashboard from "./pages/Dashboard";
+import PgListings from "./pages/PgListings";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/user-signup" element={<UserSignup />} />
             <Route path="/pg-owner-signup" element={<PgOwnerSignup />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/pg-listings" element={<PgListings />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
