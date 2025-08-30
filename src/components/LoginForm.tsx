@@ -28,10 +28,22 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
     
     setLoading(true);
     try {
-      const { error } = await signIn(email, password);
-      if (!error) {
-        // Redirect to dashboard on successful login
-        navigate('/dashboard');
+      const result = await signIn(email, password);
+      if (!result.error && result.profile) {
+        // Redirect based on user role
+        switch (result.profile.role) {
+          case 'user':
+            navigate('/pg-listings');
+            break;
+          case 'pg_owner':
+            navigate('/dashboard');
+            break;
+          case 'admin':
+            navigate('/dashboard');
+            break;
+          default:
+            navigate('/dashboard');
+        }
       }
     } catch (err) {
       console.error('Login error:', err);
