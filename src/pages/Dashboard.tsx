@@ -22,7 +22,7 @@ const Dashboard = () => {
 
   switch (profile.role) {
     case 'user':
-      return <UserDashboard />;
+      return <Navigate to="/pg-listings" replace />;
     case 'pg_owner':
       return <PgOwnerDashboard />;
     case 'admin':
