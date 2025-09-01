@@ -35,8 +35,8 @@ const PgListings = () => {
   const [listings, setListings] = useState<PgListing[]>([]);
   const [filteredListings, setFilteredListings] = useState<PgListing[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [foodType, setFoodType] = useState('');
+  const [selectedCity, setSelectedCity] = useState('all');
+  const [foodType, setFoodType] = useState('any');
   const [hasAc, setHasAc] = useState(false);
   const [hasWifi, setHasWifi] = useState(false);
   const [hasWashingMachine, setHasWashingMachine] = useState(false);
@@ -109,12 +109,12 @@ const PgListings = () => {
     }
 
     // City filter
-    if (selectedCity) {
+    if (selectedCity && selectedCity !== 'all') {
       filtered = filtered.filter(listing => listing.city === selectedCity);
     }
 
     // Food type filter
-    if (foodType) {
+    if (foodType && foodType !== 'any') {
       filtered = filtered.filter(listing => listing.food_type === foodType);
     }
 
@@ -139,8 +139,8 @@ const PgListings = () => {
 
   const clearFilters = () => {
     setSearchQuery('');
-    setSelectedCity('');
-    setFoodType('');
+    setSelectedCity('all');
+    setFoodType('any');
     setHasAc(false);
     setHasWifi(false);
     setHasWashingMachine(false);
@@ -191,7 +191,7 @@ const PgListings = () => {
                   <SelectValue placeholder="Select City" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Cities</SelectItem>
+                  <SelectItem value="all">All Cities</SelectItem>
                   {cities.map(city => (
                     <SelectItem key={city} value={city}>{city}</SelectItem>
                   ))}
@@ -224,7 +224,7 @@ const PgListings = () => {
                         <SelectValue placeholder="Any" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">Any</SelectItem>
+                        <SelectItem value="any">Any</SelectItem>
                         <SelectItem value="veg">Vegetarian</SelectItem>
                         <SelectItem value="non_veg">Non-Vegetarian</SelectItem>
                         <SelectItem value="both">Both</SelectItem>
