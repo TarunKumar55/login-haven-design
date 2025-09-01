@@ -42,6 +42,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
+  console.log('AuthProvider state:', { user: user?.id, profile: profile?.role, loading });
+
   const fetchProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase
@@ -51,6 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         .single();
 
       if (error) throw error;
+      console.log('Profile fetched:', data);
       setProfile(data);
     } catch (error) {
       console.error('Error fetching profile:', error);
@@ -159,6 +162,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signIn = async (email: string, password: string): Promise<{ error: any; profile?: Profile | null }> => {
     try {
+      console.log('AuthContext signIn called with:', email);
+      
       // Clean up existing auth state first
       cleanupAuthState();
       
@@ -174,16 +179,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         password,
       });
 
+      console.log('Supabase auth result:', { error, userData: data?.user?.id });
+
       if (error) throw error;
 
       // Fetch the user's profile after successful login
       let profileData = null;
       if (data.user) {
-        const { data: profile } = await supabase
+        console.log('Fetching profile for user:', data.user.id);
+        const { data: profile, error: profileError } = await supabase
           .from('profiles')
           .select('*')
           .eq('id', data.user.id)
           .single();
+        
+        console.log('Profile fetch result:', { profile, profileError });
         profileData = profile;
       }
 
@@ -192,6 +202,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         description: "You have been signed in successfully.",
       });
 
+      console.log('Returning from signIn:', { error: null, profile: profileData });
       return { error: null, profile: profileData };
     } catch (error: any) {
       console.error('Sign in error:', error);

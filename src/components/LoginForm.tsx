@@ -26,24 +26,36 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
     e.preventDefault();
     if (!email || !password) return;
     
+    console.log('Login form submitted for:', email);
     setLoading(true);
     try {
       const result = await signIn(email, password);
+      console.log('Sign in result:', result);
+      
       if (!result.error && result.profile) {
+        console.log('Profile found:', result.profile);
+        console.log('User role:', result.profile.role);
+        
         // Redirect based on user role
         switch (result.profile.role) {
           case 'user':
+            console.log('Redirecting user to /pg-listings');
             navigate('/pg-listings');
             break;
           case 'pg_owner':
+            console.log('Redirecting pg_owner to /dashboard');
             navigate('/dashboard');
             break;
           case 'admin':
+            console.log('Redirecting admin to /dashboard');
             navigate('/dashboard');
             break;
           default:
+            console.log('Redirecting default to /dashboard');
             navigate('/dashboard');
         }
+      } else {
+        console.log('Login failed:', result.error);
       }
     } catch (err) {
       console.error('Login error:', err);

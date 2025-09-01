@@ -1,11 +1,26 @@
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { User, Building, Shield, Home, Star, MapPin, Wifi } from "lucide-react";
 import heroInterior from "@/assets/hero-interior.jpg";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Index = () => {
+  const { user, profile, loading } = useAuth();
+  
+  console.log('Index page - Auth state:', { user: user?.id, profile: profile?.role, loading });
+
+  // If user is authenticated and has a profile, redirect appropriately
+  if (!loading && user && profile) {
+    console.log('Index: User authenticated, redirecting based on role:', profile.role);
+    if (profile.role === 'user') {
+      return <Navigate to="/pg-listings" replace />;
+    } else {
+      return <Navigate to="/dashboard" replace />;
+    }
+  }
+
   const features = [
     {
       icon: Home,
@@ -61,6 +76,15 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
+      
+      {/* Debug Info */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="fixed top-20 right-4 bg-black/80 text-white p-4 rounded-lg z-50 text-sm">
+          <div>User: {user?.id || 'None'}</div>
+          <div>Profile: {profile?.role || 'None'}</div>
+          <div>Loading: {loading.toString()}</div>
+        </div>
+      )}
       
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center">
