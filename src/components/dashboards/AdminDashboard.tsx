@@ -47,7 +47,7 @@ const AdminDashboard = () => {
         .from('pg_listings')
         .select(`
           *,
-          profiles(full_name, email, phone),
+          profiles!pg_listings_owner_id_fkey(full_name, email, phone),
           pg_images(image_url, image_order)
         `)
         .eq('status', 'pending')
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
         .from('pg_listings')
         .select(`
           *,
-          profiles(full_name, email, phone),
+          profiles!pg_listings_owner_id_fkey(full_name, email, phone),
           pg_images(image_url, image_order)
         `)
         .order('created_at', { ascending: false });
