@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Home, User, Building, Shield } from "lucide-react";
+import { Home, User, Building, Shield, LogOut, Settings } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Header = () => {
   const location = useLocation();
   const [activeTab, setActiveTab] = useState(location.pathname);
+  const { user, profile, signOut } = useAuth();
 
-  const navigationItems = [
+  // Navigation items for non-authenticated users
+  const publicNavigationItems = [
     {
       path: "/",
       label: "Home",
@@ -29,6 +32,27 @@ const Header = () => {
       icon: Shield,
     },
   ];
+
+  // Navigation items for authenticated users
+  const authenticatedNavigationItems = [
+    {
+      path: "/",
+      label: "Home",
+      icon: Home,
+    },
+    {
+      path: "/dashboard",
+      label: "Dashboard",
+      icon: Settings,
+    },
+    {
+      path: "/pg-listings", 
+      label: "Browse PGs",
+      icon: Building,
+    },
+  ];
+
+  const navigationItems = user ? authenticatedNavigationItems : publicNavigationItems;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border/50">
@@ -62,6 +86,24 @@ const Header = () => {
                 </Link>
               );
             })}
+            
+            {/* User info and signout when authenticated */}
+            {user && (
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
+                <span className="text-sm text-muted-foreground">
+                  {profile?.full_name || user.email}
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={signOut}
+                  className="flex items-center gap-2"
+                >
+                  <LogOut className="w-4 h-4" />
+                  Sign Out
+                </Button>
+              </div>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
