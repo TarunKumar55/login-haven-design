@@ -11,6 +11,7 @@ import { Search, MapPin, Wifi, Car, Utensils, AirVent, WashingMachine, Filter, X
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
+import Header from '@/components/Header';
 
 interface PgListing {
   id: string;
@@ -166,7 +167,8 @@ const PgListings = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
-      <div className="container mx-auto px-4 py-8">
+      <Header />
+      <div className="container mx-auto px-4 py-8 mt-20">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">Find Your Perfect PG</h1>
