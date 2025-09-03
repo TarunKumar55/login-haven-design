@@ -41,11 +41,6 @@ const Header = () => {
       icon: Home,
     },
     {
-      path: "/dashboard",
-      label: "Dashboard",
-      icon: Settings,
-    },
-    {
       path: "/pg-listings", 
       label: "Browse PGs",
       icon: Building,
