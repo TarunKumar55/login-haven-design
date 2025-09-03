@@ -121,7 +121,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             full_name: fullName,
             role: role
@@ -131,21 +131,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (error) throw error;
 
-      // Update the profile with the correct role after signup
-      if (data.user) {
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .update({ role, full_name: fullName })
-          .eq('id', data.user.id);
-
-        if (profileError) {
-          console.error('Error updating profile role:', profileError);
-        }
-      }
-
+      // Don't try to update profile immediately after signup
+      // The trigger will handle profile creation with the correct role
+      
       toast({
         title: "Account created successfully",
-        description: "Please check your email to verify your account.",
+        description: "Please check your email to verify your account before signing in.",
       });
 
       return { error: null };
