@@ -83,8 +83,9 @@ const SignupForm = ({ title, description, userType }: SignupFormProps) => {
       );
       
       if (!error) {
-        // Redirect to dashboard on successful signup
-        navigate('/dashboard');
+        // Don't auto-redirect - let user check email for verification
+        // The toast message from signUp will inform them to check email
+        console.log('Signup successful - please check email for verification');
       }
     } catch (err) {
       console.error('Signup error:', err);
