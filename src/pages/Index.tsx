@@ -118,8 +118,8 @@ const Index = () => {
                       <div className={`w-16 h-16 bg-gradient-to-br ${option.gradient} rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                         <Icon className="w-8 h-8 text-white" />
                       </div>
-                      <CardTitle className="text-white text-xl">{option.title}</CardTitle>
-                      <CardDescription className="text-white/80">
+                      <CardTitle className="text-gold-accent text-xl font-bold">{option.title}</CardTitle>
+                      <CardDescription className="text-cream">
                         {option.description}
                       </CardDescription>
                     </CardHeader>
@@ -168,10 +168,10 @@ const Index = () => {
                     <div className="w-16 h-16 bg-gradient-to-br from-accent to-gold-accent rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <Icon className="w-8 h-8 text-white" />
                     </div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
+                    <CardTitle className="text-xl font-bold text-deep-charcoal">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-muted-foreground">
+                    <CardDescription className="text-foreground">
                       {feature.description}
                     </CardDescription>
                   </CardContent>
