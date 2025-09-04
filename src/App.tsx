@@ -11,8 +11,9 @@ import AdminLogin from "./pages/AdminLogin";
 import UserSignup from "./pages/UserSignup";
 import PgOwnerSignup from "./pages/PgOwnerSignup";
 import Dashboard from "./pages/Dashboard";
-import PgListings from "./pages/PgListings";
-import PgOwnerForm from "./pages/PgOwnerForm";
+import PgListings from "@/pages/PgListings";
+import PgOwnerForm from "@/pages/PgOwnerForm";
+import AdminPanel from "@/pages/AdminPanel";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/pg-listings" element={<PgListings />} />
             <Route path="/pg-owner-form" element={<PgOwnerForm />} />
+            <Route path="/admin-panel" element={<AdminPanel />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

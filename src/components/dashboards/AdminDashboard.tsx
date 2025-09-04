@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LogOut, Check, X, Eye, Trash2, Users, Building, Shield } from 'lucide-react';
+import { LogOut, Check, X, Eye, Trash2, Users, Building, Shield, Settings } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { useNavigate } from 'react-router-dom';
 
 interface PgListing {
   id: string;
@@ -35,6 +36,7 @@ interface Profile {
 
 const AdminDashboard = () => {
   const { profile, signOut } = useAuth();
+  const navigate = useNavigate();
   const [pendingListings, setPendingListings] = useState<PgListing[]>([]);
   const [allListings, setAllListings] = useState<PgListing[]>([]);
   const [users, setUsers] = useState<Profile[]>([]);
@@ -239,15 +241,19 @@ const AdminDashboard = () => {
               <div className="text-2xl font-bold">{allListings.length}</div>
             </CardContent>
           </Card>
-          <Card>
+          <Card className="cursor-pointer hover:shadow-lg transition-shadow" onClick={() => navigate('/admin-panel')}>
             <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center">
-                <Users className="w-4 h-4 mr-2" />
-                Total Users
+              <CardTitle className="text-sm font-medium flex items-center justify-between">
+                <span className="flex items-center">
+                  <Users className="w-4 h-4 mr-2" />
+                  Total Users
+                </span>
+                <Settings className="w-4 h-4 text-muted-foreground" />
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{users.length}</div>
+              <p className="text-xs text-muted-foreground mt-1">Click to manage user roles</p>
             </CardContent>
           </Card>
           <Card>
@@ -266,12 +272,32 @@ const AdminDashboard = () => {
         </div>
 
         {/* Tabs */}
+        <div className="flex justify-between items-center mb-4">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1">
+            <TabsList className="grid w-full grid-cols-3 max-w-md">
+              <TabsTrigger value="pending">Pending Approvals</TabsTrigger>
+              <TabsTrigger value="listings">All Listings</TabsTrigger>
+              <TabsTrigger value="users">Users</TabsTrigger>
+            </TabsList>
+          </Tabs>
+          <Button 
+            onClick={() => navigate('/admin-panel')} 
+            variant="outline"
+            className="ml-4"
+          >
+            <Settings className="w-4 h-4 mr-2" />
+            Manage User Roles
+          </Button>
+        </div>
+
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="pending">Pending Approvals</TabsTrigger>
-            <TabsTrigger value="listings">All Listings</TabsTrigger>
-            <TabsTrigger value="users">Users</TabsTrigger>
-          </TabsList>
+          <div style={{ display: 'none' }}>
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="pending">Pending Approvals</TabsTrigger>
+              <TabsTrigger value="listings">All Listings</TabsTrigger>
+              <TabsTrigger value="users">Users</TabsTrigger>
+            </TabsList>
+          </div>
 
           {/* Pending Approvals Tab */}
           <TabsContent value="pending" className="space-y-4">
