@@ -134,7 +134,7 @@ const LoginForm = ({ title, description, userType }: LoginFormProps) => {
                 <input type="checkbox" className="rounded border-border/50" />
                 <span className="text-muted-foreground">Remember me</span>
               </label>
-              <a href="#" className="text-accent hover:text-accent/80 transition-colors">
+              <a href="/forgot-password" className="text-accent hover:text-accent/80 transition-colors">
                 Forgot password?
               </a>
             </div>

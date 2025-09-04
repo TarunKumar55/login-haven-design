@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import PgListings from "@/pages/PgListings";
 import PgOwnerForm from "@/pages/PgOwnerForm";
 import AdminPanel from "@/pages/AdminPanel";
+import ForgotPassword from "@/pages/ForgotPassword";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
             <Route path="/pg-listings" element={<PgListings />} />
             <Route path="/pg-owner-form" element={<PgOwnerForm />} />
             <Route path="/admin-panel" element={<AdminPanel />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
