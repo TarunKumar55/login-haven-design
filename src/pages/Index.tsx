@@ -119,7 +119,7 @@ const Index = () => {
                         <Icon className="w-8 h-8 text-white" />
                       </div>
                       <CardTitle className="text-gold-accent text-xl font-bold">{option.title}</CardTitle>
-                      <CardDescription className="text-cream">
+                      <CardDescription className="text-warm-beige">
                         {option.description}
                       </CardDescription>
                     </CardHeader>
@@ -171,7 +171,7 @@ const Index = () => {
                     <CardTitle className="text-xl font-bold text-deep-charcoal">{feature.title}</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <CardDescription className="text-foreground">
+                    <CardDescription className="text-muted-foreground">
                       {feature.description}
                     </CardDescription>
                   </CardContent>
