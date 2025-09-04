@@ -11,8 +11,20 @@ export interface Profile {
   full_name?: string;
   phone?: string;
   role: UserRole;
+  organization_name?: string;
+  property_count?: number;
   created_at: string;
   updated_at: string;
+}
+
+interface SignupData {
+  email: string;
+  password: string;
+  role: UserRole;
+  fullName?: string;
+  phone?: string;
+  organizationName?: string;
+  propertyCount?: string;
 }
 
 interface AuthContextType {
@@ -20,7 +32,7 @@ interface AuthContextType {
   session: Session | null;
   profile: Profile | null;
   loading: boolean;
-  signUp: (email: string, password: string, role: UserRole, fullName?: string) => Promise<{ error: any }>;
+  signUp: (signupData: SignupData) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any; profile?: Profile | null }>;
   signOut: () => Promise<void>;
   updateProfile: (updates: Partial<Profile>) => Promise<{ error: any }>;
@@ -113,9 +125,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string, role: UserRole, fullName?: string) => {
+  const signUp = async (signupData: SignupData) => {
     try {
-      const redirectUrl = `${window.location.origin}/`;
+      const { email, password, role, fullName, phone, organizationName, propertyCount } = signupData;
       
       const { data, error } = await supabase.auth.signUp({
         email,
@@ -124,7 +136,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           emailRedirectTo: `${window.location.origin}/dashboard`,
           data: {
             full_name: fullName,
-            role: role
+            phone: phone,
+            role: role,
+            organization_name: organizationName,
+            property_count: propertyCount
           }
         }
       });
@@ -132,7 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (error) throw error;
 
       // Don't try to update profile immediately after signup
-      // The trigger will handle profile creation with the correct role
+      // The trigger will handle profile creation with all the provided data
       
       toast({
         title: "Account created successfully",
@@ -246,7 +261,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!user) throw new Error('No user logged in');
 
       // Security: Only allow specific fields to be updated from client
-      const allowedFields: Array<keyof Profile> = ['full_name', 'phone'];
+      const allowedFields: Array<keyof Profile> = ['full_name', 'phone', 'organization_name', 'property_count'];
       const filteredUpdates: Partial<Profile> = {};
       
       allowedFields.forEach(field => {

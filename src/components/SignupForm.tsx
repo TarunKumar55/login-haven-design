@@ -75,12 +75,15 @@ const SignupForm = ({ title, description, userType }: SignupFormProps) => {
     setLoading(true);
     try {
       const role: UserRole = userType === 'pg-owner' ? 'pg_owner' : 'user';
-      const { error } = await signUp(
-        formData.email, 
-        formData.password, 
-        role, 
-        formData.fullName
-      );
+      const { error } = await signUp({
+        email: formData.email,
+        password: formData.password,
+        role: role,
+        fullName: formData.fullName,
+        phone: formData.phone,
+        organizationName: formData.organizationName || undefined,
+        propertyCount: formData.propertyCount || undefined
+      });
       
       if (!error) {
         // Don't auto-redirect - let user check email for verification
