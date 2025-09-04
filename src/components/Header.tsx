@@ -50,7 +50,7 @@ const Header = () => {
   const navigationItems = user ? authenticatedNavigationItems : publicNavigationItems;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-card/95 backdrop-blur-sm border-b border-border shadow-card">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-warm-beige via-cream to-secondary backdrop-blur-sm border-b border-gold-accent/20 shadow-card">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -73,7 +73,7 @@ const Header = () => {
                 <Link key={item.path} to={item.path} onClick={() => setActiveTab(item.path)}>
                   <Button
                     variant={isActive ? "default" : "ghost"}
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
                   >
                     <Icon className="w-4 h-4" />
                     {item.label}
@@ -84,7 +84,7 @@ const Header = () => {
             
             {/* User info and signout when authenticated */}
             {user && (
-              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-border">
+              <div className="flex items-center gap-2 ml-4 pl-4 border-l border-primary/20">
                 <span className="text-sm text-muted-foreground">
                   {profile?.full_name || user.email}
                 </span>
@@ -92,7 +92,7 @@ const Header = () => {
                   variant="outline"
                   size="sm"
                   onClick={signOut}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 border-primary/30 hover:bg-primary/10"
                 >
                   <LogOut className="w-4 h-4" />
                   Sign Out
@@ -102,7 +102,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile Menu Button */}
-          <Button variant="ghost" className="md:hidden">
+          <Button variant="ghost" className="md:hidden text-foreground hover:text-primary hover:bg-primary/10">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
