@@ -28,6 +28,10 @@ interface PgListing {
   security_deposit: number;
   status: 'pending' | 'approved' | 'rejected';
   is_active: boolean;
+  owner_name: string;
+  owner_phone: string;
+  owner_email: string;
+  owner_address: string;
   pg_images: { image_url: string; image_order: number }[];
 }
 
@@ -59,6 +63,10 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
     food_type: listing?.food_type || '',
     rent_per_month: listing?.rent_per_month || 0,
     security_deposit: listing?.security_deposit || 0,
+    owner_name: listing?.owner_name || profile?.full_name || '',
+    owner_phone: listing?.owner_phone || profile?.phone || '',
+    owner_email: listing?.owner_email || profile?.email || '',
+    owner_address: listing?.owner_address || '',
   });
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -143,7 +151,8 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
 
     try {
       // Validate required fields
-      if (!formData.title || !formData.address || !formData.city || !formData.state || !formData.pincode) {
+      if (!formData.title || !formData.address || !formData.city || !formData.state || !formData.pincode || 
+          !formData.owner_name || !formData.owner_phone || !formData.owner_email) {
         throw new Error('Please fill in all required fields');
       }
 
@@ -374,6 +383,62 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
                 <SelectItem value="both">Both</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Owner Contact Details */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Owner Contact Details</CardTitle>
+          <CardDescription>Your contact information for interested tenants</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="owner_name">Owner Name *</Label>
+              <Input
+                id="owner_name"
+                value={formData.owner_name}
+                onChange={(e) => setFormData({ ...formData, owner_name: e.target.value })}
+                placeholder="Your full name"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="owner_phone">Phone Number *</Label>
+              <Input
+                id="owner_phone"
+                type="tel"
+                value={formData.owner_phone}
+                onChange={(e) => setFormData({ ...formData, owner_phone: e.target.value })}
+                placeholder="Your contact number"
+                required
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="owner_email">Email Address *</Label>
+            <Input
+              id="owner_email"
+              type="email"
+              value={formData.owner_email}
+              onChange={(e) => setFormData({ ...formData, owner_email: e.target.value })}
+              placeholder="Your email address"
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="owner_address">Owner Address</Label>
+            <Textarea
+              id="owner_address"
+              value={formData.owner_address}
+              onChange={(e) => setFormData({ ...formData, owner_address: e.target.value })}
+              placeholder="Your contact address (optional)"
+              rows={2}
+            />
           </div>
         </CardContent>
       </Card>

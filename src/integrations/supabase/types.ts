@@ -63,7 +63,11 @@ export type Database = {
           latitude: number | null
           longitude: number | null
           num_beds: number
+          owner_address: string | null
+          owner_email: string | null
           owner_id: string
+          owner_name: string | null
+          owner_phone: string | null
           pincode: string
           rent_per_month: number
           security_deposit: number | null
@@ -88,7 +92,11 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           num_beds: number
+          owner_address?: string | null
+          owner_email?: string | null
           owner_id: string
+          owner_name?: string | null
+          owner_phone?: string | null
           pincode: string
           rent_per_month: number
           security_deposit?: number | null
@@ -113,7 +121,11 @@ export type Database = {
           latitude?: number | null
           longitude?: number | null
           num_beds?: number
+          owner_address?: string | null
+          owner_email?: string | null
           owner_id?: string
+          owner_name?: string | null
+          owner_phone?: string | null
           pincode?: string
           rent_per_month?: number
           security_deposit?: number | null
