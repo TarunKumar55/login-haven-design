@@ -44,6 +44,13 @@ export type Database = {
             referencedRelation: "pg_listings"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "pg_images_pg_listing_id_fkey"
+            columns: ["pg_listing_id"]
+            isOneToOne: false
+            referencedRelation: "pg_listings_public"
+            referencedColumns: ["id"]
+          },
         ]
       }
       pg_listings: {
@@ -189,7 +196,89 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      pg_listings_public: {
+        Row: {
+          address: string | null
+          approved_at: string | null
+          approved_by: string | null
+          city: string | null
+          created_at: string | null
+          description: string | null
+          food_type: string | null
+          has_ac: boolean | null
+          has_washing_machine: boolean | null
+          has_wifi: boolean | null
+          id: string | null
+          is_active: boolean | null
+          latitude: number | null
+          longitude: number | null
+          num_beds: number | null
+          pincode: string | null
+          rent_per_month: number | null
+          security_deposit: number | null
+          state: string | null
+          status: string | null
+          title: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          address?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          food_type?: string | null
+          has_ac?: boolean | null
+          has_washing_machine?: boolean | null
+          has_wifi?: boolean | null
+          id?: string | null
+          is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          num_beds?: number | null
+          pincode?: string | null
+          rent_per_month?: number | null
+          security_deposit?: number | null
+          state?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          address?: string | null
+          approved_at?: string | null
+          approved_by?: string | null
+          city?: string | null
+          created_at?: string | null
+          description?: string | null
+          food_type?: string | null
+          has_ac?: boolean | null
+          has_washing_machine?: boolean | null
+          has_wifi?: boolean | null
+          id?: string | null
+          is_active?: boolean | null
+          latitude?: number | null
+          longitude?: number | null
+          num_beds?: number | null
+          pincode?: string | null
+          rent_per_month?: number | null
+          security_deposit?: number | null
+          state?: string | null
+          status?: string | null
+          title?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pg_listings_approved_by_fkey"
+            columns: ["approved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Functions: {
       get_user_role: {

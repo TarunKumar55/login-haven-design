@@ -12,6 +12,7 @@ import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
+import { ListingDetailModal } from '@/components/listings/ListingDetailModal';
 
 interface PgListing {
   id: string;
@@ -28,6 +29,11 @@ interface PgListing {
   food_type: string;
   rent_per_month: number;
   security_deposit: number;
+  created_at: string;
+  owner_name?: string;
+  owner_phone?: string;
+  owner_email?: string;
+  owner_address?: string;
   pg_images: { image_url: string; image_order: number }[];
 }
 
@@ -366,7 +372,10 @@ const PgListings = () => {
                         </div>
                         <div className="text-xs text-muted-foreground">per month</div>
                       </div>
-                      <Button>View Details</Button>
+                      <ListingDetailModal 
+                        listing={listing}
+                        trigger={<Button>View Details</Button>}
+                      />
                     </div>
                   </div>
                 </CardContent>
