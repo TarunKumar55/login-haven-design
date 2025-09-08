@@ -200,7 +200,6 @@ export type Database = {
         Row: {
           address: string | null
           approved_at: string | null
-          approved_by: string | null
           city: string | null
           created_at: string | null
           description: string | null
@@ -224,7 +223,6 @@ export type Database = {
         Insert: {
           address?: string | null
           approved_at?: string | null
-          approved_by?: string | null
           city?: string | null
           created_at?: string | null
           description?: string | null
@@ -248,7 +246,6 @@ export type Database = {
         Update: {
           address?: string | null
           approved_at?: string | null
-          approved_by?: string | null
           city?: string | null
           created_at?: string | null
           description?: string | null
@@ -269,18 +266,20 @@ export type Database = {
           title?: string | null
           updated_at?: string | null
         }
-        Relationships: [
-          {
-            foreignKeyName: "pg_listings_approved_by_fkey"
-            columns: ["approved_by"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
+        Relationships: []
       }
     }
     Functions: {
+      get_listing_contact_info: {
+        Args: { listing_id: string }
+        Returns: {
+          id: string
+          owner_address: string
+          owner_email: string
+          owner_name: string
+          owner_phone: string
+        }[]
+      }
       get_user_role: {
         Args: { user_id: string }
         Returns: Database["public"]["Enums"]["user_role"]
