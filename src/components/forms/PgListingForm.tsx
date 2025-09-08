@@ -368,7 +368,7 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
                 <SelectValue placeholder="Select food type" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Not provided</SelectItem>
+                <SelectItem value="not_provided">Not provided</SelectItem>
                 <SelectItem value="veg">Vegetarian</SelectItem>
                 <SelectItem value="non_veg">Non-Vegetarian</SelectItem>
                 <SelectItem value="both">Both</SelectItem>
