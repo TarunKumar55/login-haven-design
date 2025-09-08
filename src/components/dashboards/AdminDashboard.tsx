@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { LogOut, Check, X, Eye, Trash2, Users, Building, Shield, Settings } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
+import { PgListingDetailModal } from '@/components/admin/PgListingDetailModal';
 
 interface PgListing {
   id: string;
@@ -17,10 +18,22 @@ interface PgListing {
   address: string;
   city: string;
   state: string;
+  pincode: string;
+  num_beds: number;
+  has_ac: boolean;
+  has_wifi: boolean;
+  has_washing_machine: boolean;
+  food_type: string;
+  rent_per_month: number;
+  security_deposit: number;
   status: 'pending' | 'approved' | 'rejected';
   is_active: boolean;
-  rent_per_month: number;
   created_at: string;
+  updated_at: string;
+  owner_name?: string;
+  owner_phone?: string;
+  owner_email?: string;
+  owner_address?: string;
   profiles: { full_name: string; email: string; phone: string } | null;
   pg_images: { image_url: string; image_order: number }[];
 }
@@ -349,6 +362,15 @@ const AdminDashboard = () => {
                         </p>
                       )}
 
+                      <div className="flex gap-2 mb-3">
+                        <PgListingDetailModal
+                          listing={listing}
+                          onApprove={(id) => handleApproveReject(id, 'approved')}
+                          onReject={(id) => handleApproveReject(id, 'rejected')}
+                          showActions={true}
+                        />
+                      </div>
+                      
                       <div className="flex gap-2">
                         <Button
                           size="sm"
@@ -404,6 +426,12 @@ const AdminDashboard = () => {
                     </TableCell>
                     <TableCell>
                       <div className="flex gap-2">
+                        <PgListingDetailModal
+                          listing={listing}
+                          onApprove={listing.status === 'pending' ? (id) => handleApproveReject(id, 'approved') : undefined}
+                          onReject={listing.status === 'pending' ? (id) => handleApproveReject(id, 'rejected') : undefined}
+                          showActions={listing.status === 'pending'}
+                        />
                         {listing.status === 'pending' && (
                           <>
                             <Button
