@@ -30,8 +30,8 @@ const Dashboard = () => {
       console.log('Dashboard: Redirecting user to /pg-listings');
       return <Navigate to="/pg-listings" replace />;
     case 'pg_owner':
-      console.log('Dashboard: Redirecting PG owner to /pg-owner-form');
-      return <Navigate to="/pg-owner-form" replace />;
+      console.log('Dashboard: Showing PgOwnerDashboard');
+      return <PgOwnerDashboard />;
     case 'admin':
       console.log('Dashboard: Showing AdminDashboard');
       return <AdminDashboard />;
