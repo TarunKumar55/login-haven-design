@@ -47,7 +47,7 @@ const PgListings = () => {
   const [hasAc, setHasAc] = useState(false);
   const [hasWifi, setHasWifi] = useState(false);
   const [hasWashingMachine, setHasWashingMachine] = useState(false);
-  const [budgetRange, setBudgetRange] = useState([0, 100000]);
+  const [budgetRange, setBudgetRange] = useState([1000, 100000]);
   const [showFilters, setShowFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [cities, setCities] = useState<string[]>([]);
@@ -135,7 +135,7 @@ const PgListings = () => {
     }
 
     // Budget filter - only apply if budget range is not at default maximum
-    if (budgetRange[1] < 100000 || budgetRange[0] > 0) {
+    if (budgetRange[1] < 100000 || budgetRange[0] > 1000) {
       filtered = filtered.filter(listing =>
         listing.rent_per_month && 
         listing.rent_per_month >= budgetRange[0] && 
@@ -153,7 +153,7 @@ const PgListings = () => {
     setHasAc(false);
     setHasWifi(false);
     setHasWashingMachine(false);
-    setBudgetRange([0, 100000]);
+    setBudgetRange([1000, 100000]);
   };
 
   const getMainImage = (images: { image_url: string; image_order: number }[]) => {
@@ -214,9 +214,9 @@ const PgListings = () => {
               >
                 <Filter className="w-4 h-4 mr-2" />
                 Filters
-                {(hasAc || hasWifi || hasWashingMachine || (foodType !== 'any') || (budgetRange[0] > 0) || (budgetRange[1] < 100000)) && (
+                {(hasAc || hasWifi || hasWashingMachine || (foodType !== 'any') || (budgetRange[0] > 1000) || (budgetRange[1] < 100000)) && (
                   <Badge variant="secondary" className="ml-2">
-                    {[hasAc, hasWifi, hasWashingMachine, (foodType !== 'any'), ((budgetRange[0] > 0) || (budgetRange[1] < 100000))].filter(Boolean).length}
+                    {[hasAc, hasWifi, hasWashingMachine, (foodType !== 'any'), ((budgetRange[0] > 1000) || (budgetRange[1] < 100000))].filter(Boolean).length}
                   </Badge>
                 )}
               </Button>
@@ -251,7 +251,7 @@ const PgListings = () => {
                       value={budgetRange}
                       onValueChange={setBudgetRange}
                       max={100000}
-                      min={0}
+                      min={1000}
                       step={1000}
                       className="mt-2"
                     />
