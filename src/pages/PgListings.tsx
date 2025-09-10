@@ -54,14 +54,13 @@ const PgListings = () => {
 
   console.log('PgListings - Auth state:', { user: user?.id, profile: profile?.role, loading });
 
+  // Show loading state
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  if (!user) {
-    console.log('PgListings: No user, redirecting to login');
-    return <Navigate to="/user-login" replace />;
-  }
+  // Allow viewing listings without authentication
+  // Authentication is only required for contacting owners
 
   const fetchListings = async () => {
     try {
