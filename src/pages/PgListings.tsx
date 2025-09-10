@@ -63,16 +63,14 @@ const PgListings = () => {
   const fetchListings = async () => {
     try {
       const { data, error } = await supabase
-        .from('pg_listings')
+        .from('pg_listings_public')
         .select(`
           *,
-          pg_images (
+          pg_images!pg_images_pg_listing_id_fkey (
             image_url,
             image_order
           )
         `)
-        .eq('status', 'approved')
-        .eq('is_active', true)
         .order('created_at', { ascending: false });
 
       if (error) throw error;
