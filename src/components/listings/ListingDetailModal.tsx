@@ -5,6 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ListingContactInfo } from './ListingContactInfo';
 import { Eye, MapPin, Bed, Wifi, Wind, Shirt, Utensils, IndianRupee, Calendar } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState } from 'react';
 
 interface PgListing {
   id: string;
@@ -35,6 +38,44 @@ interface ListingDetailModalProps {
 }
 
 export const ListingDetailModal = ({ listing, trigger }: ListingDetailModalProps) => {
+  const { user, profile } = useAuth();
+  const [contactInfo, setContactInfo] = useState<{
+    owner_name?: string;
+    owner_phone?: string;
+    owner_email?: string;
+    owner_address?: string;
+  }>({});
+
+  useEffect(() => {
+    const fetchContactInfo = async () => {
+      if (user && profile) {
+        try {
+          const { data, error } = await supabase.rpc('get_listing_contact_info', {
+            listing_id: listing.id
+          });
+          
+          if (error) {
+            console.error('Error fetching contact info:', error);
+            return;
+          }
+          
+          if (data && data.length > 0) {
+            setContactInfo({
+              owner_name: data[0].owner_name,
+              owner_phone: data[0].owner_phone,
+              owner_email: data[0].owner_email,
+              owner_address: data[0].owner_address
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching contact info:', error);
+        }
+      }
+    };
+
+    fetchContactInfo();
+  }, [listing.id, user, profile]);
+
   const getFoodTypeLabel = (foodType: string) => {
     switch (foodType) {
       case 'veg':
@@ -66,9 +107,13 @@ export const ListingDetailModal = ({ listing, trigger }: ListingDetailModalProps
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle className="text-xl">{listing.title}</DialogTitle>
+      <DialogContent className="max-w-7xl max-h-[95vh] overflow-y-auto">
+        <DialogHeader className="pb-4">
+          <DialogTitle className="text-2xl font-bold">{listing.title}</DialogTitle>
+          <div className="flex items-center text-muted-foreground">
+            <MapPin className="w-4 h-4 mr-1" />
+            {listing.city}, {listing.state}
+          </div>
         </DialogHeader>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -221,12 +266,7 @@ export const ListingDetailModal = ({ listing, trigger }: ListingDetailModalProps
 
             {/* Contact Information */}
             <ListingContactInfo 
-              contactInfo={{
-                owner_name: listing.owner_name,
-                owner_phone: listing.owner_phone,
-                owner_email: listing.owner_email,
-                owner_address: listing.owner_address
-              }}
+              contactInfo={contactInfo}
               listingTitle={listing.title}
             />
 
