@@ -34,18 +34,33 @@ const Header = () => {
   ];
 
   // Navigation items for authenticated users
-  const authenticatedNavigationItems = [
-    {
-      path: "/",
-      label: "Home",
-      icon: Home,
-    },
-    {
-      path: "/pg-listings", 
-      label: "Browse PGs",
-      icon: Building,
-    },
-  ];
+  const getNavigationItems = () => {
+    const baseItems = [
+      {
+        path: "/",
+        label: "Home",
+        icon: Home,
+      },
+      {
+        path: "/pg-listings", 
+        label: "Browse PGs",
+        icon: Building,
+      },
+    ];
+
+    // Add dashboard link for admins and pg_owners
+    if (profile?.role === 'admin' || profile?.role === 'pg_owner') {
+      baseItems.push({
+        path: "/dashboard",
+        label: profile.role === 'admin' ? "Admin Panel" : "Dashboard", 
+        icon: Settings,
+      });
+    }
+
+    return baseItems;
+  };
+
+  const authenticatedNavigationItems = getNavigationItems();
 
   const navigationItems = user ? authenticatedNavigationItems : publicNavigationItems;
 
