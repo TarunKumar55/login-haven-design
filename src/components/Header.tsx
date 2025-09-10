@@ -57,6 +57,15 @@ const Header = () => {
       });
     }
 
+    // Add PG form link for admins and pg_owners
+    if (profile?.role === 'admin' || profile?.role === 'pg_owner') {
+      baseItems.push({
+        path: "/pg-owner-form",
+        label: profile.role === 'admin' ? "Add PG Listing" : "Add Listing",
+        icon: Building,
+      });
+    }
+
     return baseItems;
   };
 

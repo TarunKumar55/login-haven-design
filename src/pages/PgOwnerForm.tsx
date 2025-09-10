@@ -18,7 +18,7 @@ const PgOwnerForm = () => {
     return <Navigate to="/" replace />;
   }
 
-  if (profile.role !== 'pg_owner') {
+  if (profile.role !== 'pg_owner' && profile.role !== 'admin') {
     return <Navigate to="/dashboard" replace />;
   }
 
@@ -32,8 +32,15 @@ const PgOwnerForm = () => {
       <div className="container mx-auto px-4 py-8 mt-20">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-2">Welcome, PG Owner!</h1>
-            <p className="text-muted-foreground text-lg">List your property and start attracting tenants</p>
+            <h1 className="text-4xl font-bold mb-2">
+              {profile.role === 'admin' ? 'Add PG Listing' : 'Welcome, PG Owner!'}
+            </h1>
+            <p className="text-muted-foreground text-lg">
+              {profile.role === 'admin' 
+                ? 'Create and manage PG listings as an administrator'
+                : 'List your property and start attracting tenants'
+              }
+            </p>
           </div>
 
           {!showForm ? (
@@ -43,10 +50,13 @@ const PgOwnerForm = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Plus className="w-5 h-5 text-primary" />
-                    Add Your First PG Listing
+                    {profile.role === 'admin' ? 'Add New PG Listing' : 'Add Your First PG Listing'}
                   </CardTitle>
                   <CardDescription>
-                    Create a detailed listing for your PG property with photos, amenities, and pricing
+                    {profile.role === 'admin' 
+                      ? 'Create a new PG listing that will be automatically approved'
+                      : 'Create a detailed listing for your PG property with photos, amenities, and pricing'
+                    }
                   </CardDescription>
                 </CardHeader>
                 <CardContent>

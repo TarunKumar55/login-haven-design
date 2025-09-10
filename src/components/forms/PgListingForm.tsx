@@ -158,12 +158,17 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
 
       if (!listing) {
         // Create new listing
+        const listingData = {
+          ...formData,
+          owner_id: profile?.id,
+          status: profile?.role === 'admin' ? 'approved' : 'pending',
+          approved_at: profile?.role === 'admin' ? new Date().toISOString() : null,
+          approved_by: profile?.role === 'admin' ? profile.id : null,
+        };
+
         const { data: newListing, error: listingError } = await supabase
           .from('pg_listings')
-          .insert({
-            ...formData,
-            owner_id: profile?.id,
-          })
+          .insert(listingData)
           .select()
           .single();
 
@@ -189,7 +194,9 @@ const PgListingForm: React.FC<PgListingFormProps> = ({ listing, onSuccess, onCan
 
         toast({
           title: "Success",
-          description: "PG listing created and sent for approval",
+          description: profile?.role === 'admin' 
+            ? "PG listing created and automatically approved"
+            : "PG listing created and sent for approval",
         });
       } else {
         // Update existing listing
