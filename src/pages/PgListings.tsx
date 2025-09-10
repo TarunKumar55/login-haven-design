@@ -52,16 +52,20 @@ const PgListings = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [cities, setCities] = useState<string[]>([]);
 
+  console.log('PgListings - Auth state:', { user: user?.id, profile: profile?.role, loading });
+
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
   }
 
-  if (!user || !profile) {
-    return <Navigate to="/" replace />;
+  if (!user) {
+    console.log('PgListings: No user, redirecting to login');
+    return <Navigate to="/user-login" replace />;
   }
 
   const fetchListings = async () => {
     try {
+      console.log('PgListings: Fetching listings...');
       const { data, error } = await supabase
         .from('pg_listings_public')
         .select(`
@@ -72,6 +76,8 @@ const PgListings = () => {
           )
         `)
         .order('created_at', { ascending: false });
+
+      console.log('PgListings: Fetch result:', { data: data?.length, error });
 
       if (error) throw error;
 
