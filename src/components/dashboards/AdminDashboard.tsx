@@ -10,6 +10,7 @@ import { LogOut, Check, X, Eye, Trash2, Users, Building, Shield, Settings } from
 import { toast } from '@/hooks/use-toast';
 import { useNavigate } from 'react-router-dom';
 import { PgListingDetailModal } from '@/components/admin/PgListingDetailModal';
+import Header from '@/components/Header';
 
 interface PgListing {
   id: string;
@@ -215,19 +216,17 @@ const AdminDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="bg-card border-b">
-        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div>
+      <Header />
+      
+      {/* Admin Dashboard Content Header */}
+      <div className="pt-20">
+        <div className="container mx-auto px-4 py-6">
+          <div className="mb-6">
             <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
             <p className="text-muted-foreground">Welcome, {profile?.full_name || profile?.email}</p>
           </div>
-          <Button variant="outline" onClick={signOut}>
-            <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
-          </Button>
         </div>
-      </header>
+      </div>
 
       <div className="container mx-auto px-4 py-8">
         {/* Stats Cards */}

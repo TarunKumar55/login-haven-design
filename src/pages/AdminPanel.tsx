@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Users, ArrowLeft } from "lucide-react";
 import UserManagement from "@/components/admin/UserManagement";
+import Header from "@/components/Header";
 
 const AdminPanel = () => {
   const { profile, loading } = useAuth();
@@ -33,7 +34,8 @@ const AdminPanel = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8">
+      <Header />
+      <div className="container mx-auto px-4 py-8 pt-24">
         <div className="mb-6">
           <Button
             variant="ghost"
